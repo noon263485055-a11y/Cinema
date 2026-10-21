@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineLiteracy: รู้เท่าทันสื่อภาพยนตร์ในยุคดิจิทัล</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* CINEMA DARK MODE THEME */
+    :root {
+      --bg-cinema: #0d0d0d;
+      --gold-primary: #FFD700;
+      --neon-red: #FF2A6D;
+      --cyber-cyan: #05D9E8;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-cinema);
+      color: var(--text-main);
+      font-family: 'Prompt', -apple-system, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .font-cinzel { font-family: 'Cinzel', serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* MARQUEE LIGHTS */
+    .marquee-chaser {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 12px;
+      background: #050505;
+      border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+    }
+    .bulb {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      animation: bulbBlink 1.2s infinite alternate;
+    }
+    .bulb-gold { background: var(--gold-primary); box-shadow: 0 0 8px var(--gold-primary); }
+    .bulb-red { background: var(--neon-red); box-shadow: 0 0 8px var(--neon-red); }
+    .bulb-cyan { background: var(--cyber-cyan); box-shadow: 0 0 8px var(--cyber-cyan); }
+
+    @keyframes bulbBlink {
+      0% { opacity: 0.3; transform: scale(0.9); }
+      100% { opacity: 1; transform: scale(1.1); }
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
+    .cinema-card {
+      background: #141414;
+      border: 2px solid #222;
+      border-radius: 20px;
+      padding: 24px;
+      transition: all 0.3s ease;
+    }
+    .cinema-card:hover {
+      border-color: rgba(255, 215, 0, 0.5);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-gold { background: var(--gold-primary); color: #000; box-shadow: 0 0 15px rgba(255,215,0,0.3); }
+    .btn-gold:hover { background: #ffe234; transform: scale(1.02); }
+    .btn-red { background: var(--neon-red); color: #fff; box-shadow: 0 0 15px rgba(255,42,109,0.3); }
+    .btn-cyan { background: var(--cyber-cyan); color: #000; box-shadow: 0 0 15px rgba(5,217,232,0.3); }
+    .btn-outline { background: #1a1a1a; border: 1px solid #444; color: #eee; }
+    .btn-outline:hover { background: #2a2a2a; border-color: #666; }
+
+    /* TICKET STYLING */
+    .ticket-container {
+      background: linear-gradient(135deg, #181818, #111);
+      border: 2px solid var(--gold-primary);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+    }
+
+    /* END CREDITS ROLL */
+    .credits-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(8px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .credits-box {
+      width: 90%;
+      max-width: 650px;
+      height: 80vh;
+      background: #000;
+      border: 2px solid var(--gold-primary);
+      border-radius: 24px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+    }
+    .credits-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 80px 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP MARQUEE LIGHTS -->
+  <div class="marquee-chaser">
+    <div style="display:flex; gap:10px;">
+      <span class="bulb bulb-gold"></span>
+      <span class="bulb bulb-red"></span>
+      <span class="bulb bulb-cyan"></span>
+      <span class="bulb bulb-gold"></span>
+      <span class="bulb bulb-cyan"></span>
+    </div>
+    <div class="font-mono" style="font-size:11px; color:var(--gold-primary); letter-spacing:2px;">
+      ★ CINELITERACY · รู้เท่าทันสื่อภาพยนตร์ในยุคดิจิทัล · NUNEKTD ★
+    </div>
+    <div style="display:flex; gap:10px;">
+      <span class="bulb bulb-cyan"></span>
+      <span class="bulb bulb-gold"></span>
+      <span class="bulb bulb-red"></span>
+    </div>
+  </div>
+
+  <!-- HERO SECTION -->
+  <header style="background: radial-gradient(circle at 50% 20%, #1a1a1a 0%, #0d0d0d 100%); border-bottom: 2px solid #222; padding: 48px 16px;">
+    <div class="container" style="text-align:center;">
+      <div class="font-mono" style="color:var(--cyber-cyan); font-size:12px; letter-spacing:3px; margin-bottom:8px;">
+        INTERACTIVE MULTIMEDIA LEARNING APPLICATION
+      </div>
+      <h1 class="font-cinzel" style="font-size: clamp(2rem, 5vw, 3.5rem); font-weight:900; margin-bottom:12px; text-shadow:0 0 25px rgba(255,42,109,0.4);">
+        CINE<span style="color:var(--neon-red);">LITERACY</span>
+      </h1>
+      <p style="font-size: 1.1rem; color: #cbd5e1; max-width: 700px; margin: 0 auto 24px;">
+        แอปพลิเคชันการเรียนรู้เชิงโต้ตอบเพื่อสร้างภูมิคุ้มกันในการเสพ วิพากษ์ และสร้างสรรค์สื่อภาพยนตร์ในยุคดิจิทัล<br>
+        <span style="color:var(--gold-primary); font-size:0.9rem;">โดย nunektd (ภาควิชาเทคโนโลยีการศึกษา คณะศึกษาศาสตร์ มหาวิทยาลัยศิลปากร)</span>
+      </p>
+      <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+        <button class="btn btn-gold" onclick="scrollToQuiz()">🎟️ ทำแบบทดสอบตั๋วหนัง</button>
+        <button class="btn btn-red" onclick="openCreditsModal()">🎬 HOLLYWOOD CREDITS</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="container" style="display:flex; flex-direction:column; gap:48px;">
+    
+    <!-- 1. BIAS & FRAMING LAB -->
+    <section class="cinema-card">
+      <div style="border-bottom: 1px solid #333; padding-bottom: 12px; margin-bottom: 20px;">
+        <span class="font-mono" style="color:var(--neon-red); font-size:12px; font-weight:bold;">LAB 01 · INTERACTIVE FRAMING & BIAS</span>
+        <h2 class="font-cinzel" style="font-size:1.8rem; margin-top:4px;">ห้องทดลองมุมกล้องและอคติ</h2>
+        <p style="color:var(--text-muted); font-size:13px;">ปรับมุมกล้องและโทนสี เพื่อดูการชี้นำทางจิตวิทยาและข้อความแฝง (Subtext)</p>
+      </div>
+
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:24px; align-items:center;">
+        <div id="sim-viewport" style="aspect-ratio:16/9; background:#000; border:2px solid var(--gold-primary); border-radius:16px; position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center;">
+          <div id="sim-character" style="width:100px; height:140px; background:linear-gradient(to bottom, #ddd, #666); border-radius:20px; transition:all 0.5s ease; display:flex; flex-direction:column; align-items:center; justify-content:center; box-shadow:0 0 20px rgba(255,255,255,0.2);">
+            <div style="font-size:11px; font-weight:bold; color:#000; font-family:monospace;">[SUBJECT]</div>
+          </div>
+          <div style="position:absolute; bottom:8px; right:12px; font-size:10px; font-family:monospace; color:var(--cyber-cyan);" id="hud-status">
+            ANGLE: EYE LEVEL · MOOD: WARM
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div>
+            <label class="font-mono" style="font-size:12px; color:var(--cyber-cyan); font-weight:bold; display:block; margin-bottom:6px;">
+              เลือกมุมมองกล้อง (Camera Angle):
+            </label>
+            <div style="display:flex; gap:8px;">
+              <button class="btn btn-outline" onclick="setAngle('low')">มุมเงย (Low)</button>
+              <button class="btn btn-outline" onclick="setAngle('eye')">ระดับสายตา (Eye)</button>
+              <button class="btn btn-outline" onclick="setAngle('high')">มุมก้ม (High)</button>
+            </div>
+          </div>
+
+          <div>
+            <label class="font-mono" style="font-size:12px; color:var(--gold-primary); font-weight:bold; display:block; margin-bottom:6px;">
+              เลือกโทนสี (Color Mood):
+            </label>
+            <div style="display:flex; gap:8px;">
+              <button class="btn btn-outline" onclick="setMood('warm')">โทนอุ่น (Warm)</button>
+              <button class="btn btn-outline" onclick="setMood('cold')">โทนเย็น (Cyber)</button>
+              <button class="btn btn-outline" onclick="setMood('noir')">นัวร์ (Noir B&W)</button>
+            </div>
+          </div>
+
+          <div style="background:#1a1a1a; padding:16px; border-radius:12px; border-left:3px solid var(--neon-red);" id="critique-box">
+            <strong style="color:#fff; font-size:13px; display:block; margin-bottom:4px;" id="critique-title">
+              ผลทางจิตวิทยา: ระดับสายตา (Eye-level)
+            </strong>
+            <p style="font-size:12px; color:#cbd5e1;" id="critique-desc">
+              สร้างความรู้สึกเท่าเทียม เป็นกลาง และเข้าถึงง่าย ใช้ในสารคดีที่ต้องการความน่าเชื่อถือ
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. MOVIE MODULES 4 REELS -->
+    <section>
+      <div style="border-bottom: 1px solid #333; padding-bottom: 12px; margin-bottom: 24px;">
+        <span class="font-mono" style="color:var(--cyber-cyan); font-size:12px; font-weight:bold;">CURRICULUM · 4 CORE MODULES</span>
+        <h2 class="font-cinzel" style="font-size:1.8rem; margin-top:4px;">บทเรียนสไตล์ภาพยนตร์ 4 หมวด</h2>
+      </div>
+
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:20px;">
+        <div class="cinema-card" style="border-color:rgba(5,217,232,0.3);">
+          <span class="font-mono" style="color:var(--cyber-cyan); font-size:11px; font-weight:bold;">REEL #01</span>
+          <h3 style="font-size:1.1rem; margin:6px 0;">AI & Deepfake in Cinema</h3>
+          <p style="font-size:12px; color:#94a3b8; line-height:1.5;">การแยกแยะภาพ/เสียง AI Deepfake, การตรวจสอบคลิปหลอกลวง และจริยธรรมสื่อภาพยนตร์ในยุค AI</p>
+        </div>
+
+        <div class="cinema-card" style="border-color:rgba(255,42,109,0.3);">
+          <span class="font-mono" style="color:var(--neon-red); font-size:11px; font-weight:bold;">REEL #02</span>
+          <h3 style="font-size:1.1rem; margin:6px 0;">The Art of Manipulation</h3>
+          <p style="font-size:12px; color:#94a3b8; line-height:1.5;">วิเคราะห์มุมกล้อง โทนสี ดนตรีประกอบที่ส่งผลต่อการจูงใจอารมณ์ ข้อความแฝง (Subtext) และอคติ</p>
+        </div>
+
+        <div class="cinema-card" style="border-color:rgba(255,215,0,0.3);">
+          <span class="font-mono" style="color:var(--gold-primary); font-size:11px; font-weight:bold;">REEL #03</span>
+          <h3 style="font-size:1.1rem; margin:6px 0;">Digital Copyright & Fair Use</h3>
+          <p style="font-size:12px; color:#94a3b8; line-height:1.5;">กฎหมายลิขสิทธิ์ภาพยนตร์ การเสพสื่อผ่าน Streaming การตัดต่อคลิปรีวิวลง TikTok/Reels</p>
+        </div>
+
+        <div class="cinema-card" style="border-color:rgba(157,78,221,0.3);">
+          <span class="font-mono" style="color:#9d4edd; font-size:11px; font-weight:bold;">REEL #04</span>
+          <h3 style="font-size:1.1rem; margin:6px 0;">Spoiler Culture & Netiquette</h3>
+          <p style="font-size:12px; color:#94a3b8; line-height:1.5;">วัฒนธรรมการสปอยล์หนัง มารยาทในชุมชนออนไลน์ และการสร้างสังคมวิจารณ์หนังอย่างสร้างสรรค์</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. TICKET PASS QUIZ -->
+    <section id="quiz-section">
+      <div style="border-bottom: 1px solid #333; padding-bottom: 12px; margin-bottom: 24px;">
+        <span class="font-mono" style="color:var(--gold-primary); font-size:12px; font-weight:bold;">INTERACTIVE ASSESSMENT</span>
+        <h2 class="font-cinzel" style="font-size:1.8rem; margin-top:4px;">Ticket Pass Interactive Quiz (5 ข้อ)</h2>
+      </div>
+
+      <div class="ticket-container" style="padding:28px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <span class="font-mono" style="color:var(--gold-primary); font-size:13px; font-weight:bold;">ADMISSION TICKET · SEAT A-01</span>
+          <span class="font-mono" style="font-size:12px; color:#aaa;" id="quiz-step">QUESTION 1 / 5</span>
+        </div>
+
+        <div style="background:#0a0a0a; padding:18px; border-radius:14px; border:1px solid #222; margin-bottom:18px;">
+          <strong style="color:var(--gold-primary); display:block; font-size:13px; margin-bottom:6px;">🎬 สถานการณ์จำลอง:</strong>
+          <p style="font-size:14px; color:#e2e8f0;" id="q-situation">
+            คุณเห็นคลิปสั้นบนโซเชียลมีเดียที่นักแสดงชื่อดังผู้ล่วงลับไปแล้ว กำลังออกมาพูดสนับสนุนพรรคการเมืองในการเลือกตั้งปัจจุบัน
+          </p>
+        </div>
+
+        <h3 style="font-size:1.1rem; margin-bottom:16px;" id="q-title">
+          ในฐานะผู้ชมที่มีความรู้ดิจิทัลด้านภาพยนตร์ ข้อใดคือการประเมินสถานการณ์ที่ถูกต้องที่สุด?
+        </h3>
+
+        <div style="display:flex; flex-direction:column; gap:10px;" id="options-container">
+          <!-- Rendered via JS -->
+        </div>
+
+        <div id="quiz-feedback" style="display:none; margin-top:20px; background:#111; padding:16px; border-radius:12px; border:1px solid #333;">
+          <div style="font-weight:bold; font-size:13px; margin-bottom:4px;" id="feedback-status"></div>
+          <p style="font-size:12px; color:#cbd5e1;" id="feedback-text"></p>
+          <button class="btn btn-gold" style="margin-top:12px;" onclick="nextQuestion()">ข้อถัดไป ➔</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- CREDITS MODAL -->
+  <div class="credits-overlay" id="credits-modal">
+    <div class="credits-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 20px; background:#111; border-bottom:1px solid #333;">
+        <span class="font-mono" style="color:var(--gold-primary); font-size:12px; font-weight:bold;">HOLLYWOOD END CREDITS ROLL</span>
+        <button onclick="closeCreditsModal()" style="background:none; border:none; color:#fff; font-size:16px; cursor:pointer;">✕</button>
+      </div>
+      <div class="credits-scroll" id="credits-scroll">
+        <h2 class="font-cinzel" style="font-size:2rem; margin-bottom:8px; color:#fff;">CINELITERACY</h2>
+        <p style="color:var(--cyber-cyan); font-size:14px; margin-bottom:32px;">รู้เท่าทันสื่อภาพยนตร์ในยุคดิจิทัล</p>
+        <div style="margin-bottom:28px;">
+          <div class="font-mono" style="color:#aaa; font-size:11px; letter-spacing:2px;">DEVELOPER & INSTRUCTIONAL DESIGNER</div>
+          <div style="font-size:1.4rem; font-weight:bold; color:var(--neon-red);">nunektd</div>
+        </div>
+        <div style="margin-bottom:28px;">
+          <div class="font-mono" style="color:#aaa; font-size:11px; letter-spacing:2px;">DEPARTMENT & UNIVERSITY AFFILIATION</div>
+          <div style="font-size:1rem; font-weight:bold; color:#fff;">ภาควิชาเทคโนโลยีการศึกษา</div>
+          <div style="font-size:0.9rem; color:#cbd5e1;">คณะศึกษาศาสตร์ มหาวิทยาลัยศิลปากร</div>
+          <div class="font-mono" style="font-size:11px; color:var(--gold-primary); margin-top:4px;">Silpakorn University</div>
+        </div>
+        <div style="margin-bottom:32px;">
+          <div class="font-mono" style="color:#aaa; font-size:11px; letter-spacing:2px;">ACADEMIC REFERENCES</div>
+          <div style="font-size:12px; color:#bbb; line-height:1.8;">
+            • สำนักงาน ก.พ. (OCSC Digital Literacy Framework)<br>
+            • คลังความรู้ SciMath (สสวท. / กระทรวงศึกษาธิการ)<br>
+            • หอภาพยนตร์ (องค์การมหาชน)<br>
+            • UNESCO Media and Information Literacy (MIL)
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMBEDDED JAVASCRIPT & AUDIO ENGINE -->
+  <script>
+    class WebAudioEngine {
+      constructor() { this.ctx = null; }
+      getCtx() {
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) this.ctx = new AudioCtx();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+        return this.ctx;
+      }
+      playPunch() {
+        const c = this.getCtx(); if (!c) return;
+        const osc = c.createOscillator(); const g = c.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(450, c.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(70, c.currentTime + 0.08);
+        g.gain.setValueAtTime(0.8, c.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.01, c.currentTime + 0.09);
+        osc.connect(g); g.connect(c.destination);
+        osc.start(); osc.stop(c.currentTime + 0.1);
+      }
+      playCorrect() {
+        const c = this.getCtx(); if (!c) return;
+        [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
+          const o = c.createOscillator(); const g = c.createGain();
+          o.type = 'sine'; o.frequency.setValueAtTime(f, c.currentTime + i * 0.08);
+          g.gain.setValueAtTime(0.25, c.currentTime + i * 0.08);
+          g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + i * 0.08 + 0.3);
+          o.connect(g); g.connect(c.destination);
+          o.start(c.currentTime + i * 0.08); o.stop(c.currentTime + i * 0.08 + 0.35);
+        });
+      }
+    }
+    const audio = new WebAudioEngine();
+
+    function setAngle(a) {
+      audio.playPunch();
+      const char = document.getElementById('sim-character');
+      const title = document.getElementById('critique-title');
+      const desc = document.getElementById('critique-desc');
+      const hud = document.getElementById('hud-status');
+      if (a === 'low') {
+        char.style.transform = 'scale(1.2) translateY(-20px) rotate(-10deg)';
+        title.innerText = 'ผลทางจิตวิทยา: มุมเงย (Low Angle)';
+        desc.innerText = 'ตัวละครดูทรงอำนาจ ยิ่งใหญ่ หรือคุกคาม มักใช้ชี้นำให้ผู้ชมยอมรับความเห็นของผู้พูดโดยไม่กล้าตั้งคำถาม';
+        hud.innerText = 'ANGLE: LOW ANGLE · MOOD: ACTIVE';
+      } else if (a === 'high') {
+        char.style.transform = 'scale(0.85) translateY(25px) rotate(10deg)';
+        title.innerText = 'ผลทางจิตวิทยา: มุมก้ม (High Angle)';
+        desc.innerText = 'ตัวละครดูเปราะบาง ไร้อำนาจ หรือตกเป็นเหยื่อ ใช้เร้าความเห็นอกเห็นใจจนอาจละเลยข้อเท็จจริง';
+        hud.innerText = 'ANGLE: HIGH ANGLE · MOOD: ACTIVE';
+      } else {
+        char.style.transform = 'scale(1) translateY(0) rotate(0deg)';
+        title.innerText = 'ผลทางจิตวิทยา: ระดับสายตา (Eye-level)';
+        desc.innerText = 'สร้างความรู้สึกเท่าเทียม สมจริง เป็นกลาง และเข้าถึงง่าย ใช้ในสารคดีที่ต้องการความน่าเชื่อถือ';
+        hud.innerText = 'ANGLE: EYE LEVEL · MOOD: ACTIVE';
+      }
+    }
+
+    function setMood(m) {
+      audio.playPunch();
+      const vp = document.getElementById('sim-viewport');
+      if (m === 'warm') {
+        vp.style.filter = 'sepia(0.4) saturate(1.4)';
+      } else if (m === 'cold') {
+        vp.style.filter = 'hue-rotate(160deg) saturate(1.2)';
+      } else {
+        vp.style.filter = 'grayscale(1) contrast(1.5)';
+      }
+    }
+
+    const questions = [
+      {
+        situation: 'คุณเห็นคลิปสั้นบนโซเชียลมีเดียที่นักแสดงชื่อดังผู้ล่วงลับไปแล้ว กำลังออกมาพูดสนับสนุนพรรคการเมืองในการเลือกตั้งปัจจุบัน',
+        title: 'ในฐานะผู้ชมที่มีความรู้ดิจิทัลด้านภาพยนตร์ ข้อใดคือการประเมินสถานการณ์ที่ถูกต้องที่สุด?',
+        options: [
+          { text: 'ก. เป็นคลิปจริงแน่นอน เพราะเทคโนโลยีปัจจุบันบันทึกวิดีโอได้อย่างสมบูรณ์แบบ', correct: false },
+          { text: 'ข. มีความเป็นไปได้สูงมากที่จะเป็น Deepfake ที่สร้างขึ้นโดยผิดจริยธรรมและละเมิดสิทธิในบุคลิกภาพ', correct: true },
+          { text: 'ค. ควรแชร์ต่อทันทีเพื่อสอบถามความคิดเห็นของเพื่อนๆ ในไทม์ไลน์', correct: false },
+          { text: 'ง. หากนักแสดงเคยแสดงภาพยนตร์การเมืองไว้ ย่อมหมายความว่าเขาอนุญาตให้ใช้ภาพได้ตลอดไป', correct: false }
+        ],
+        explanation: 'การสังเคราะห์ภาพและเสียงของผู้ล่วงลับด้วย AI ในประเด็นการเมือง ละเมิดสิทธิในบุคลิกภาพ (Right of Publicity) และมักมีเจตนาบิดเบือนข้อมูล'
+      },
+      {
+        situation: 'ในภาพยนตร์แนวสืบสวนคดี ผู้กำกับถ่ายทอดภาพของตัวละครผู้ต้องหาคนหนึ่งด้วย "มุมกล้องเงยสูงมาก (Extreme Low Angle)" ภายใต้เงามืด',
+        title: 'เทคนิคการจัดมุมกล้องและการจัดแสงลักษณะนี้ สื่อสารข้อความแฝง (Subtext) ทางจิตวิทยาอย่างไร?',
+        options: [
+          { text: 'ก. แสดงให้เห็นว่าตัวละครนี้เป็นคนยากจนและไม่มีที่อยู่อาศัย', correct: false },
+          { text: 'ข. ทำให้ตัวละครดูยิ่งใหญ่ น่าเกรงขาม หรือมีความลับดำมืดที่คุกคามผู้อื่นอยู่', correct: true },
+          { text: 'ค. เป็นเพียงความบังเอิญของตากล้องที่วางกล้องไว้บนพื้น', correct: false },
+          { text: 'ง. แสดงให้เห็นว่าตัวละครกำลังตกเป็นเหยื่อที่น่าสงสารและไร้พลังต่อสู้', correct: false }
+        ],
+        explanation: 'Low Angle ทำให้วัตถุหรือบุคคลดูมีอำนาจเหนือกว่าผู้ชม ผนวกกับแสงเงาแบบ Chiaroscuro ที่สร้างความคลุมเครือทางศีลธรรม'
+      },
+      {
+        situation: 'คุณต้องการเปิดช่อง TikTok แนะนำภาพยนตร์ โดยตัดคลิปฉากสนทนาสั้นๆ ความยาว 12 วินาที มาประกอบการพูดวิเคราะห์เทคนิคการเขียนบท',
+        title: 'การกระทำนี้เข้าข่ายการใช้งานที่เป็นธรรม (Fair Use) ตามกฎหมายลิขสิทธิ์หรือไม่ เพราะเหตุใด?',
+        options: [
+          { text: 'ก. เข้าข่าย Fair Use เพราะเป็นการนำชิ้นส่วนสั้นๆ มาใช้เพื่อการวิจารณ์ มีการแสดงความคิดเห็นใหม่ และไม่กระทบยอดขายหนัง', correct: true },
+          { text: 'ข. ไม่เข้าข่าย เพราะกฎหมายห้ามแตะต้องภาพยนตร์ของผู้อื่นแม้แต่วินาทีเดียว', correct: false },
+          { text: 'ค. เข้าข่ายเฉพาะในกรณีที่คุณแอบใส่ลายน้ำปิดบังชื่อภาพยนตร์ดั้งเดิมไว้ทั้งหมด', correct: false },
+          { text: 'ง. ไม่เข้าข่าย เว้นแต่คุณจะต้องจ่ายเงินค่าตั๋วหนังซ้ำ 100 รอบ', correct: false }
+        ],
+        explanation: 'มาตรา 32-33 แห่ง พ.ร.บ. ลิขสิทธิ์ ให้ข้อยกเว้นการใช้งานที่เป็นธรรมเพื่อการวิจารณ์ ติชม หรือแนะนำผลงาน โดยอ้างอิงถึงเจ้าของสิทธิ์'
+      },
+      {
+        situation: 'มีโฆษณาในกลุ่มโซเชียลมีเดียชวนให้คลิก "ลิงก์ดูหนังชนโรงฟรี ความคมชัดระดับ 4K ไม่ต้องเสียเงินรายเดือน"',
+        title: 'ข้อใดคือความเสี่ยงที่แท้จริงของการคลิกและเข้าชมเว็บไซต์ดูหนังเถื่อนเหล่านี้?',
+        options: [
+          { text: 'ก. ไม่มีความเสี่ยงใดๆ เพราะเบราว์เซอร์ทุกตัวสามารถป้องกันไวรัสได้ 100%', correct: false },
+          { text: 'ข. มีความเสี่ยงสูงที่จะถูกฝังมัลแวร์ ดักจับเซสชันบัญชีธนาคาร และเปิดช่องทางให้แฮกเกอร์โจรกรรมข้อมูล', correct: true },
+          { text: 'ค. ภาพยนตร์จะเล่นเร็วกว่าปกติ 2 เท่าจนดูไม่ทัน', correct: false },
+          { text: 'ง. หน้าจอคอมพิวเตอร์จะเปลี่ยนเป็นสีขาวดำถาวร', correct: false }
+        ],
+        explanation: 'เว็บไซต์ละเมิดลิขสิทธิ์มักถูกสร้างโดยกลุ่มอาชญากรไซเบอร์เพื่อสร้างรายได้จากการกระจายมัลแวร์ และฟิชชิ่งข้อมูลส่วนบุคคล'
+      },
+      {
+        situation: 'คุณได้ไปชมภาพยนตร์รอบปฐมทัศน์ในคืนวันแรกที่ฉาย และค้นพบจุดหักมุมครั้งใหญ่ที่ไม่มีใครคาดคิดมาก่อน',
+        title: 'พฤติกรรมใดแสดงถึงความเป็นพลเมืองดิจิทัลและมารยาททางสังคมออนไลน์ (Cyber Netiquette) ที่ดีที่สุด?',
+        options: [
+          { text: 'ก. แคปภาพจุดหักมุมแล้วตั้งเป็นรูปโปรไฟล์เฟซบุ๊กเพื่ออวดว่าตนเองได้ดูก่อนใคร', correct: false },
+          { text: 'ข. พิมพ์เล่าเรื่องราวทั้งหมดลงในทวีตสาธารณะพร้อมใส่แฮชแท็กชื่อหนังโดยไม่มีคำเตือน', correct: false },
+          { text: 'ค. เขียนบทวิเคราะห์ความรู้สึกโดยไม่เปิดเผยเนื้อหาสำคัญ หรือใส่คำเตือน [SPOILER ALERT] ชัดเจน', correct: true },
+          { text: 'ง. ส่งข้อความไปบอกจุดหักมุมให้เพื่อนทุกคนที่ยังไม่ได้ดูในแชตส่วนตัวทันที', correct: false }
+        ],
+        explanation: 'การเคารพสิทธิในการรับรู้และความสุขในการค้นพบเรื่องราวของผู้อื่น เป็นหัวใจสำคัญของมารยาทดิจิทัล (Netiquette)'
+      }
+    ];
+
+    let currentQIdx = 0;
+    let quizScore = 0;
+
+    function renderQuestion() {
+      const q = questions[currentQIdx];
+      document.getElementById('quiz-step').innerText = `QUESTION ${currentQIdx + 1} / ${questions.length}`;
+      document.getElementById('q-situation').innerText = q.situation;
+      document.getElementById('q-title').innerText = q.title;
+      document.getElementById('quiz-feedback').style.display = 'none';
+
+      const optContainer = document.getElementById('options-container');
+      optContainer.innerHTML = '';
+
+      q.options.forEach((opt) => {
+        const btn = document.createElement('button');
+        btn.className = 'btn btn-outline';
+        btn.style.textAlign = 'left';
+        btn.style.padding = '12px 16px';
+        btn.style.fontSize = '13px';
+        btn.innerText = opt.text;
+        btn.onclick = () => answerQuestion(opt.correct, q.explanation);
+        optContainer.appendChild(btn);
+      });
+    }
+
+    function answerQuestion(isCorrect, exp) {
+      audio.playPunch();
+      const fb = document.getElementById('quiz-feedback');
+      const st = document.getElementById('feedback-status');
+      const tx = document.getElementById('feedback-text');
+
+      if (isCorrect) {
+        quizScore++;
+        audio.playCorrect();
+        st.innerText = '✓ เจาะตั๋วถูกต้อง! (Correct Punch)';
+        st.style.color = '#10b981';
+      } else {
+        st.innerText = '✕ ยังไม่ถูกต้อง (Wrong Punch)';
+        st.style.color = 'var(--neon-red)';
+      }
+
+      tx.innerText = exp;
+      fb.style.display = 'block';
+
+      const btns = document.getElementById('options-container').querySelectorAll('button');
+      btns.forEach(b => b.disabled = true);
+    }
+
+    function nextQuestion() {
+      if (currentQIdx < questions.length - 1) {
+        currentQIdx++;
+        renderQuestion();
+      } else {
+        alert(`🎉 ยินดีด้วย! คุณทำแบบทดสอบตั๋วหนังเสร็จสิ้น ได้คะแนน: ${quizScore} / ${questions.length} คะแนน\n(ระดับ: Senior Movie Critic · CineLiteracy by nunektd)`);
+        currentQIdx = 0;
+        quizScore = 0;
+        renderQuestion();
+      }
+    }
+
+    function scrollToQuiz() {
+      document.getElementById('quiz-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function openCreditsModal() {
+      audio.playPunch();
+      document.getElementById('credits-modal').style.display = 'flex';
+      const scr = document.getElementById('credits-scroll');
+      scr.scrollTop = 0;
+      let s = 0;
+      const interval = setInterval(() => {
+        s += 1;
+        scr.scrollTop = s;
+        if (s >= scr.scrollHeight - scr.clientHeight) clearInterval(interval);
+      }, 35);
+    }
+
+    function closeCreditsModal() {
+      document.getElementById('credits-modal').style.display = 'none';
+    }
+
+    window.onload = () => {
+      renderQuestion();
+    };
+  </script>
+</body>
+</html>

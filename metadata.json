@@ -1,0 +1,6 @@
+{
+  "name": "CineLiteracy: รู้เท่าทันสื่อภาพยนตร์ในยุคดิจิทัล",
+  "description": "เว็บแอปพลิเคชันมัลติมีเดียเพื่อการเรียนรู้เชิงโต้ตอบ CineLiteracy รู้เท่าทันสื่อภาพยนตร์ในยุคดิจิทัล โดย nunektd ภาควิชาเทคโนโลยีการศึกษา คณะศึกษาศาสตร์ มหาวิทยาลัยศิลปากร",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
